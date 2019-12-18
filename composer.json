@@ -1,5 +1,5 @@
 {
-  "name": "bavix/laravel-wallet",
+  "name": "walterjrp/laravel-wallet-mongodb",
   "description": "Easy work with virtual wallet.",
   "keywords": [
     "laravel",
