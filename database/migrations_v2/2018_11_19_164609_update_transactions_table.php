@@ -42,16 +42,6 @@ class UpdateTransactionsTable extends Migration
                 ->on($this->walletTable())
                 ->onDelete('cascade');
         });
-
-        $slug = config('wallet.wallet.default.slug', 'default');
-        DB::transaction(function () use ($slug) {
-            Wallet::where('slug', $slug)->each(function (Wallet $wallet) {
-                Transaction::query()
-                    ->where('payable_type', $wallet->holder_type)
-                    ->where('payable_id', $wallet->holder_id)
-                    ->update(['wallet_id' => $wallet->id]);
-            });
-        });
     }
 
     /**

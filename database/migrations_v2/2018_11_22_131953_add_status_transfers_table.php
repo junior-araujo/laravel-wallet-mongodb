@@ -37,13 +37,6 @@ class AddStatusTransfersTable extends Migration
                 ->nullable()
                 ->after('status');
         });
-
-        DB::table($this->table())
-            ->where('refund', true)
-            ->update([
-                'status' => Transfer::STATUS_REFUND,
-                'status_last' => Transfer::STATUS_PAID,
-            ]);
     }
 
     /**

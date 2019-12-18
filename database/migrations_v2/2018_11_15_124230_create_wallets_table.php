@@ -36,29 +36,6 @@ class CreateWalletsTable extends Migration
 
             $table->unique(['holder_type', 'holder_id', 'slug']);
         });
-
-        /**
-         * migrate v1 to v2
-         */
-        $default = config('wallet.wallet.default.name', 'Default Wallet');
-        $slug = config('wallet.wallet.default.slug', 'default');
-        $query = Transaction::query()->distinct()
-            ->selectRaw('payable_type as holder_type')
-            ->selectRaw('payable_id as holder_id')
-            ->selectRaw('? as name', [$default])
-            ->selectRaw('? as slug', [$slug])
-            ->selectRaw('sum(amount) as balance')
-            ->selectRaw('? as created_at', [Carbon::now()])
-            ->selectRaw('? as updated_at', [Carbon::now()])
-            ->groupBy('holder_type', 'holder_id')
-            ->orderBy('holder_type');
-
-        DB::transaction(function () use ($query) {
-            $query->chunk(1000, function (Collection $transactions) {
-                DB::table((new Wallet())->getTable())
-                    ->insert($transactions->toArray());
-            });
-        });
     }
 
     /**

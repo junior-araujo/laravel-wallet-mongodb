@@ -36,22 +36,9 @@ class CreateTransactionsTable extends Migration
     /**
      * @param Blueprint $table
      * @param string $column
-     * @return ColumnDefinition
      */
-    public function json(Blueprint $table, string $column): ColumnDefinition
+    public function json(Blueprint $table, string $column)
     {
-        $conn = DB::connection();
-        if ($conn instanceof MySqlConnection || $conn instanceof PostgresConnection) {
-            $pdo = $conn->getPdo();
-            try {
-                $sql = 'SELECT JSON_EXTRACT(\'[10, 20, [30, 40]]\', \'$[1]\');';
-                $prepare = $pdo->prepare($sql);
-                $prepare->fetch();
-            } catch (\Throwable $throwable) {
-                return $table->text($column);
-            }
-        }
-
         return $table->json($column);
     }
 
